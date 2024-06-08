@@ -10,7 +10,7 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
 
-    <Grid Background="AntiqueWhite">
+    <Grid Background="AntiqueWhite" KeyDown="Grid_KeyDown">
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
 
             <Border
@@ -67,8 +67,9 @@
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top"
                 Background="Transparent"
+                Click="Button_Click"
                 Content="Зарегистрироваться"
-                FontSize="18" Click="Button_Click" />
+                FontSize="18" />
 
         </StackPanel>
     </Grid>

@@ -15,7 +15,7 @@ namespace BurgerApp.Pages
             InitializeComponent();
         }
 
-        private void LoginBtnClick(object sender, RoutedEventArgs e)
+        private void Login()
         {
             var login = LoginBox.Text;
             var password = PasswordBox.Password;
@@ -41,9 +41,22 @@ namespace BurgerApp.Pages
             }
         }
 
+        private void LoginBtnClick(object sender, RoutedEventArgs e)
+        {
+            Login();
+        }
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new RegistrationPage());
+        }
+
+        private void Grid_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if(e.Key == System.Windows.Input.Key.Enter)
+            {
+                Login();
+            }
         }
     }
 }
