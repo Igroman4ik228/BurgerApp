@@ -20,13 +20,15 @@
             FontSize="22" />
         <TextBlock
             Name="HelloBox"
+            MaxWidth="600"
+            Margin="0,50,0,0"
             HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            FontSize="30" />
+            FontSize="18"
+            TextAlignment="Center" />
 
         <ListBox
             Name="MyLBox"
-            Height="380"
+            Height="650"
             Margin="0,15,0,0"
             HorizontalAlignment="Center"
             VerticalAlignment="Center">
@@ -56,6 +58,7 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
+
         <Button
             Name="DeleteBtn"
             Width="200"
@@ -73,18 +76,28 @@
             Margin="10"
             HorizontalAlignment="Center"
             VerticalAlignment="Bottom"
-            Click="changeBtn_Click"
+            Click="ChangeBtn_Click"
             Content="Изменить"
             FontSize="18" />
-        <Button
-            Name="AddBtn"
-            Width="200"
-            Height="40"
-            Margin="10"
+        <StackPanel
+            Margin="0,0,10,10"
             HorizontalAlignment="Right"
-            VerticalAlignment="Bottom"
-            Click="addBtn_Click"
-            Content="Добавить"
-            FontSize="18" />
+            VerticalAlignment="Bottom">
+            <Button
+                Name="AddBtn"
+                Width="200"
+                Height="20"
+                Click="AddBtn_Click"
+                Content="Добавить"
+                FontSize="14" />
+            <Button
+                Name="EditIngredients"
+                Width="200"
+                Height="20"
+                Click="EditIngredients_Click"
+                Content="Ингридиенты"
+                FontSize="14" />
+        </StackPanel>
+
     </Grid>
 </Page>

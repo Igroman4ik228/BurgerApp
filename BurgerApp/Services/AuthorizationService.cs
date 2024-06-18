@@ -12,7 +12,7 @@ namespace BurgerApp.Services
 
         public static AuthorizationService Instance
         {
-            get => instance ?? (instance = new AuthorizationService());
+            get => instance ??= new AuthorizationService();
         }
 
         public User? AuthorizeUser(string login, string password)

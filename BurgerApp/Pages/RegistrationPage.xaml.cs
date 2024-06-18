@@ -24,6 +24,11 @@ namespace BurgerApp.Pages
             {
                 NavigationService.Navigate(new WorkPlacePage());
             }
+            else
+            {
+                MessageBox.Show("Ошибка регистрации");
+                return;
+            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

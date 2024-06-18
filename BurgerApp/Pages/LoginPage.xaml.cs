@@ -17,8 +17,8 @@ namespace BurgerApp.Pages
 
         private void Login()
         {
-            var login = LoginBox.Text;
-            var password = PasswordBox.Password;
+            string login = LoginBox.Text;
+            string password = PasswordBox.Password;
 
             var user = AuthorizationService.Instance.AuthorizeUser(login, password);
 
@@ -53,7 +53,7 @@ namespace BurgerApp.Pages
 
         private void Grid_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
-            if(e.Key == System.Windows.Input.Key.Enter)
+            if (e.Key == System.Windows.Input.Key.Enter)
             {
                 Login();
             }

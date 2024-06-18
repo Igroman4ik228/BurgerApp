@@ -17,10 +17,7 @@ namespace BurgerApp.Pages
         {
             InitializeComponent();
 
-            var currentTime = DateTime.Now;
-            var nowFormat = string.Format("{0}:{1}:{2}", currentTime.Hour, currentTime.Minute, currentTime.Second);
-            User user = AuthorizationService.Instance.CurrentUser;
-            HelloBox.Text = $"Здравствуйте, {user.Login}\nВаша роль: {user.Role.Name}\nВремя авторизации: {nowFormat}";
+            HelloMessage();
 
 
             var allFood = ApplicationContext.Instance.Foods
@@ -55,6 +52,14 @@ namespace BurgerApp.Pages
 
             }
             MyLBox.ItemsSource = menuItems;
+        }
+
+        public void HelloMessage()
+        {
+            var currentTime = DateTime.Now;
+            var nowFormat = string.Format("{0}:{1}:{2}", currentTime.Hour, currentTime.Minute, currentTime.Second);
+            User user = AuthorizationService.Instance.CurrentUser;
+            HelloBox.Text = $"Здравствуйте, {user.Login}\nВаша роль: {user.Role.Name}\nВремя авторизации: {nowFormat}";
         }
     }
 }

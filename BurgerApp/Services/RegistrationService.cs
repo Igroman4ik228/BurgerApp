@@ -1,21 +1,13 @@
 ﻿using BurgerApp.Database;
 using BurgerApp.Database.Models;
-using BurgerApp.Pages;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Navigation;
 
 namespace BurgerApp.Services
 {
     internal class RegistrationService
     {
-        public static bool RegistrerUser(string login, string password) 
+        public static bool RegistrerUser(string login, string password)
         {
             if (ApplicationContext.Instance.Users.FirstOrDefault(x => x.Login == login) != null)
             {

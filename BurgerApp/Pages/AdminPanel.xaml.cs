@@ -17,13 +17,19 @@ namespace BurgerApp.Pages
         public AdminPanel()
         {
             InitializeComponent();
+
+            HelloMessage();
+
+            RefreshData();
+
+        }
+
+        public void HelloMessage()
+        {
             var currentTime = DateTime.Now;
             var nowFormat = string.Format("{0}:{1}:{2}", currentTime.Hour, currentTime.Minute, currentTime.Second);
             User user = AuthorizationService.Instance.CurrentUser;
             HelloBox.Text = $"Здравствуйте, {user.Login}\nВаша роль: {user.Role.Name}\nВремя авторизации: {nowFormat}";
-
-            RefreshData();
-
         }
 
         private void RefreshData()
@@ -67,16 +73,14 @@ namespace BurgerApp.Pages
 
         private void DeleteBtn_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            var item = MyLBox.SelectedItem as MenuItemDTO;
-
-            if (item == null)
+            if (MyLBox.SelectedItem is not MenuItemDTO item)
             {
                 MessageBox.Show("Не выбран элемент");
                 return;
             }
 
             var result = MessageBox.Show($"Вы уверенны, что хотите удалить {item.FoodName}?", "Внимание", MessageBoxButton.YesNo);
-            
+
             if (result == MessageBoxResult.Yes)
             {
                 MenuService.Instance.DeleteItem(item);
@@ -85,15 +89,24 @@ namespace BurgerApp.Pages
             }
 
         }
+        private void EditIngredients_Click(object sender, RoutedEventArgs e)
+        {
+            if (MyLBox.SelectedItem is MenuItemDTO item)
+            {
+                NavigationService.Navigate(new EditIngredientsPage(item.Id));
+            }
+        }
 
-        private void changeBtn_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void ChangeBtn_Click(object sender, System.Windows.RoutedEventArgs e)
         {
 
         }
 
-        private void addBtn_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void AddBtn_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-
+            NavigationService.Navigate(new AddItemPage());
         }
+
+
     }
 }

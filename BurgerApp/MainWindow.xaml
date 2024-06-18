@@ -16,11 +16,12 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <TextBlock
+            Name="Logo"
             Grid.ColumnSpan="2"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             FontSize="40"
-            MouseLeftButtonDown="TextBlock_MouseLeftButtonDown"
+            MouseLeftButtonDown="Logo_MouseLeftButtonDown"
             Text="BurgerApp" />
         <Frame
             Name="MainFrame"

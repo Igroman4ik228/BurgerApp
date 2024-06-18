@@ -29,8 +29,6 @@ namespace BurgerApp.Database
 
             string connectionString = $"Server={serverName};Database={dbName};User Id={userId}; Password={password};TrustServerCertificate=True";
             optionsBuilder.UseSqlServer(connectionString);
-
-            
         }
     }
 }

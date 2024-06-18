@@ -12,6 +12,7 @@ namespace BurgerApp
         public MainWindow()
         {
             InitializeComponent();
+
             MainFrame.Navigate(new LoginPage());
 
             string allUsers = "Вывод пользователей\n ";
@@ -31,9 +32,20 @@ namespace BurgerApp
             MessageBox.Show(allUsers);
         }
 
-        private void TextBlock_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void Logo_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            MainFrame.Navigate(new LoginPage());
+            if (MainFrame.Content is LoginPage || MainFrame.Content is RegistrationPage)
+            {
+                return;
+            }
+            
+            var answer = MessageBox.Show("Вы уверены что хотите выйти из аккаунта?", "Внимание", MessageBoxButton.YesNo);
+
+            if (answer == MessageBoxResult.Yes) 
+            {
+                MainFrame.Navigate(new LoginPage());
+            }
+            
         }
     }
 }
