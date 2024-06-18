@@ -1,4 +1,5 @@
-﻿using BurgerApp.Database.Models;
+﻿using BurgerApp.Database;
+using BurgerApp.Database.Models;
 using BurgerApp.Services;
 using System.Windows;
 using System.Windows.Controls;
@@ -10,11 +11,19 @@ namespace BurgerApp.Pages
     /// </summary>
     public partial class AddItemPage : Page
     {
-        public AddItemPage()
+        private readonly MenuService _menuService;
+        private readonly ApplicationContext _context;
+        private readonly AuthorizationService _authorizationService;
+
+        public AddItemPage(MenuService menuService, AuthorizationService authorizationService, ApplicationContext context)
         {
             InitializeComponent();
-            var categories = MenuService.Instance.GetAllCategories();
 
+            _menuService = menuService;
+            _authorizationService = authorizationService;
+            _context = context;
+
+            var categories = _menuService.GetAllCategories();
             CategoryCBox.ItemsSource = categories;
         }
 
@@ -28,8 +37,8 @@ namespace BurgerApp.Pages
                 return;
             }
             int categoryId = ((Category)CategoryCBox.SelectedItem).Id;
-            MenuService.Instance.AddNewMenuItem(name, description, priceResult, categoryId);
-            NavigationService.Navigate(new WorkPlacePage());
+            _menuService.AddNewMenuItem(name, description, priceResult, categoryId);
+            NavigationService.Navigate(new WorkPlacePage(_authorizationService, _context));
         }
     }
 }

@@ -12,10 +12,13 @@ namespace BurgerApp.Pages
     public partial class EditIngredientsPage : Page
     {
         private int _id;
-        public EditIngredientsPage(int foodId)
+        private readonly MenuService _menuService;
+
+        public EditIngredientsPage(int foodId, MenuService menuService)
         {
             InitializeComponent();
             _id = foodId;
+            _menuService = menuService;
             RefreshData();
         }
 
@@ -26,7 +29,7 @@ namespace BurgerApp.Pages
 
         private void AddBtn_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            new AddEditIngredientWindow(null, _id).ShowDialog();
+            new AddEditIngredientWindow(null, _id, _menuService).ShowDialog();
             RefreshData();
         }
 
@@ -35,7 +38,7 @@ namespace BurgerApp.Pages
             var item = IngridientsLBox.SelectedItem as FoodIngridient;
             if (item != null) 
             {
-                new AddEditIngredientWindow(item, _id).ShowDialog();    
+                new AddEditIngredientWindow(item, _id, _menuService).ShowDialog();    
             }
             RefreshData();
         }
@@ -44,7 +47,7 @@ namespace BurgerApp.Pages
         {
             IngridientsLBox.ItemsSource = null;
 
-            var foodIngredients = MenuService.Instance.GetFoodIngredientsByFoodId(_id);
+            var foodIngredients = _menuService.GetFoodIngredientsByFoodId(_id);
             IngridientsLBox.ItemsSource = foodIngredients;
         }
     }

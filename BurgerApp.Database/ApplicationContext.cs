@@ -5,13 +5,6 @@ namespace BurgerApp.Database
 {
     public class ApplicationContext : DbContext
     {
-        private static ApplicationContext instance;
-
-        public static ApplicationContext Instance
-        {
-            get => instance ??= new ApplicationContext();
-        }
-
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Category> Categories { get; set; }
@@ -19,6 +12,7 @@ namespace BurgerApp.Database
         public DbSet<Ingridient> Ingridients { get; set; }
         public DbSet<Food> Foods { get; set; }
         public DbSet<FoodIngridient> FoodIngridients { get; set; }
+     
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             string serverName = "stud-mssql.sttec.yar.ru,38325";

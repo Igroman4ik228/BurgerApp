@@ -1,19 +1,6 @@
-﻿using BurgerApp.Database;
-using BurgerApp.Database.Models;
+﻿using BurgerApp.Database.Models;
 using BurgerApp.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace BurgerApp.Windows
 {
@@ -24,17 +11,19 @@ namespace BurgerApp.Windows
     {
         private FoodIngridient _foodIngredient;
         private int _foodId;
+        private readonly MenuService _menuService;
 
-        public AddEditIngredientWindow(FoodIngridient foodIngredient, int foodId)
+        public AddEditIngredientWindow(FoodIngridient foodIngredient, int foodId, MenuService menuService)
         {
             InitializeComponent();
             _foodIngredient = foodIngredient;
             _foodId = foodId;
+            _menuService = menuService;
 
-            List<Ingridient> ingredients = MenuService.Instance.GetAllIngredients();
+            List<Ingridient> ingredients = _menuService.GetAllIngredients();
             IngredientCBox.ItemsSource = ingredients;
 
-            if (_foodIngredient != null) 
+            if (_foodIngredient != null)
             {
                 CountTBox.Text = foodIngredient.CountOfUnit.ToString();
                 IngredientCBox.SelectedItem = ingredients.FirstOrDefault(x => x.Id == foodIngredient.Ingridient.Id);
@@ -48,11 +37,11 @@ namespace BurgerApp.Windows
 
             if (_foodIngredient == null)
             {
-                MenuService.Instance.AddNewFoodIngredient(_foodId, ingredient.Id, countOfUnit);
+                _menuService.AddNewFoodIngredient(_foodId, ingredient.Id, countOfUnit);
             }
-            else 
+            else
             {
-                MenuService.Instance.EditFoodIngredient(_foodIngredient.Id, ingredient.Id, countOfUnit);
+                _menuService.EditFoodIngredient(_foodIngredient.Id, ingredient.Id, countOfUnit);
             }
 
             Close();

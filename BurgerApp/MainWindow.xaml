@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="MainWindow"
     Width="1220"
-    Height="1080"
+    Height="1020"
     ResizeMode="NoResize"
     mc:Ignorable="d">
     <Grid>

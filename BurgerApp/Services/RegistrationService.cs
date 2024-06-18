@@ -5,11 +5,14 @@ using System.Windows;
 
 namespace BurgerApp.Services
 {
-    internal class RegistrationService
+    public class RegistrationService(ApplicationContext context, AuthorizationService authorizationService)
     {
-        public static bool RegistrerUser(string login, string password)
+        private readonly AuthorizationService _authorizationService;
+        private readonly ApplicationContext _context = context;
+
+        public bool RegistrerUser(string login, string password)
         {
-            if (ApplicationContext.Instance.Users.FirstOrDefault(x => x.Login == login) != null)
+            if (_context.Users.FirstOrDefault(x => x.Login == login) != null)
             {
                 MessageBox.Show("Логин занят");
                 return false;
@@ -24,17 +27,17 @@ namespace BurgerApp.Services
                 RoleId = 2, // role is user
             };
 
-            ApplicationContext.Instance.Users
+            _context.Users
                 .Add(user);
-            ApplicationContext.Instance.SaveChanges();
+            _context.SaveChanges();
 
 
-            user = ApplicationContext.Instance.Users
+            user = _context.Users
                 .OrderByDescending(u => u.Id)
                 .Include(u => u.Role)
                 .FirstOrDefault();
 
-            AuthorizationService.Instance.CurrentUser = user;
+            _authorizationService.CurrentUser = user;
             return true;
         }
     }

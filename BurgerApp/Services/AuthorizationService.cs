@@ -4,21 +4,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BurgerApp.Services
 {
-    public class AuthorizationService
+    public class AuthorizationService(ApplicationContext context)
     {
+        private readonly ApplicationContext _context = context;
+
         public User? CurrentUser { get; set; }
-
-        private static AuthorizationService instance;
-
-        public static AuthorizationService Instance
-        {
-            get => instance ??= new AuthorizationService();
-        }
 
         public User? AuthorizeUser(string login, string password)
         {
 
-            var user = ApplicationContext.Instance.Users
+            var user = _context.Users
                 .Include(u => u.Role)
                 .FirstOrDefault(u => u.Login == login);
 

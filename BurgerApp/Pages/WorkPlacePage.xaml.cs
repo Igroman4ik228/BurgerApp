@@ -13,14 +13,20 @@ namespace BurgerApp.Pages
     public partial class WorkPlacePage : Page
     {
         public List<MenuItemDTO> menuItems = [];
-        public WorkPlacePage()
+
+        private readonly AuthorizationService _authorizationService;
+        private readonly ApplicationContext _context;
+
+        public WorkPlacePage(AuthorizationService authorizationService, ApplicationContext context)
         {
             InitializeComponent();
 
+            _authorizationService = authorizationService;
+            _context = context;
+
             HelloMessage();
 
-
-            var allFood = ApplicationContext.Instance.Foods
+            var allFood = _context.Foods
                 .Include(x => x.Category)
                 .ToList();
 
@@ -35,7 +41,7 @@ namespace BurgerApp.Pages
                     Price = food.Price
                 };
 
-                var allFoodIngredients = ApplicationContext.Instance.FoodIngridients
+                var allFoodIngredients = _context.FoodIngridients
                     .Include(x => x.Food)
                     .Include(x => x.Ingridient)
                     .ThenInclude(x => x.Unit)
@@ -58,7 +64,7 @@ namespace BurgerApp.Pages
         {
             var currentTime = DateTime.Now;
             var nowFormat = string.Format("{0}:{1}:{2}", currentTime.Hour, currentTime.Minute, currentTime.Second);
-            User user = AuthorizationService.Instance.CurrentUser;
+            User user = _authorizationService.CurrentUser;
             HelloBox.Text = $"Здравствуйте, {user.Login}\nВаша роль: {user.Role.Name}\nВремя авторизации: {nowFormat}";
         }
     }

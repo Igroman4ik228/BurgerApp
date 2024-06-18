@@ -5,17 +5,15 @@ using System.Linq;
 
 namespace BurgerApp.Services
 {
-    internal class MenuService
+    public class MenuService(ApplicationContext context)
     {
-        private static MenuService instance;
-        public static MenuService Instance
-        {
-            get => instance ??= new MenuService();
-        }
-        public List<Ingridient> GetAllIngredients() => ApplicationContext.Instance.Ingridients.ToList();
+        private readonly ApplicationContext _context = context;
+
+
+        public List<Ingridient> GetAllIngredients() => _context.Ingridients.ToList();
         public void AddNewMenuItem(string name, string description, double price, int categoryId)
         {
-            var category = ApplicationContext.Instance.Categories.FirstOrDefault(c => c.Id == categoryId);
+            var category = _context.Categories.FirstOrDefault(c => c.Id == categoryId);
 
             if (category == null)
             {
@@ -30,60 +28,60 @@ namespace BurgerApp.Services
         }
         public void AddNewFoodIngredient(int foodId, int ingredientId, int countOfUnit)
         {
-            var ingredient = ApplicationContext.Instance.Ingridients.FirstOrDefault(x => x.Id == ingredientId);
-            var food = ApplicationContext.Instance.Foods.FirstOrDefault(x => x.Id == foodId);
-            ApplicationContext.Instance.FoodIngridients.Add(new FoodIngridient
+            var ingredient = _context.Ingridients.FirstOrDefault(x => x.Id == ingredientId);
+            var food = _context.Foods.FirstOrDefault(x => x.Id == foodId);
+            _context.FoodIngridients.Add(new FoodIngridient
             {
                 CountOfUnit = countOfUnit,
                 Ingridient = ingredient,
                 Food = food
             });
-            ApplicationContext.Instance.SaveChanges();
+            _context.SaveChanges();
         }
         public void EditFoodIngredient(int foodIngredientId, int ingredientId, int countOfUnit)
         {
-            var foodIngredient = ApplicationContext.Instance.FoodIngridients.FirstOrDefault(x => x.Id == foodIngredientId);
-            var ingredient = ApplicationContext.Instance.Ingridients.FirstOrDefault(x => x.Id == ingredientId);
+            var foodIngredient = _context.FoodIngridients.FirstOrDefault(x => x.Id == foodIngredientId);
+            var ingredient = _context.Ingridients.FirstOrDefault(x => x.Id == ingredientId);
 
             foodIngredient.Ingridient = ingredient;
             foodIngredient.CountOfUnit = countOfUnit;
 
-            ApplicationContext.Instance.SaveChanges();
+            _context.SaveChanges();
         }
         public void DeleteFoodIngredient(FoodIngridient foodIngredient) 
         {
-            var removeItems = ApplicationContext.Instance.FoodIngridients
+            var removeItems = _context.FoodIngridients
                 .Where(x => x.Id == foodIngredient.Id)
                 .ToList();
 
-            ApplicationContext.Instance.FoodIngridients.RemoveRange(removeItems);
+            _context.FoodIngridients.RemoveRange(removeItems);
 
-            ApplicationContext.Instance.SaveChanges();
+            _context.SaveChanges();
         }
 
         public List<FoodIngridient> GetFoodIngredientsByFoodId(int foodId)
         {
-            return ApplicationContext.Instance.FoodIngridients
+            return _context.FoodIngridients
                 .Where(x => x.Food.Id == foodId)
                 .ToList();
         }
 
-        public List<Category> GetAllCategories() => ApplicationContext.Instance.Categories.ToList();
+        public List<Category> GetAllCategories() => _context.Categories.ToList();
 
         public void DeleteItem(MenuItemDTO menuItemDTO)
         {
-            var removeItems = ApplicationContext.Instance.FoodIngridients.Where(x => x.Id == menuItemDTO.Id).ToList();
+            var removeItems = _context.FoodIngridients.Where(x => x.Id == menuItemDTO.Id).ToList();
 
-            ApplicationContext.Instance.FoodIngridients.RemoveRange(removeItems);
+            _context.FoodIngridients.RemoveRange(removeItems);
 
-            ApplicationContext.Instance.SaveChanges();
+            _context.SaveChanges();
 
 
-            var removeFoods = ApplicationContext.Instance.Foods.FirstOrDefault(x => x.Id == menuItemDTO.Id);
+            var removeFoods = _context.Foods.FirstOrDefault(x => x.Id == menuItemDTO.Id);
 
-            ApplicationContext.Instance.Foods.Remove(removeFoods);
+            _context.Foods.Remove(removeFoods);
 
-            ApplicationContext.Instance.SaveChanges();
+            _context.SaveChanges();
         }
 
     }

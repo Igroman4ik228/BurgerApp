@@ -14,21 +14,28 @@ namespace BurgerApp.Pages
     public partial class AdminPanel : Page
     {
         public List<MenuItemDTO> menuItems = [];
-        public AdminPanel()
+
+        private readonly AuthorizationService _authorizationService;
+        private readonly ApplicationContext _context;
+        private readonly MenuService _menuService;
+
+        public AdminPanel(AuthorizationService authorizationService, ApplicationContext context, MenuService menuService)
         {
             InitializeComponent();
 
+            _authorizationService = authorizationService;
+            _context = context;
+            _menuService = menuService;
+
             HelloMessage();
-
             RefreshData();
-
         }
 
         public void HelloMessage()
         {
             var currentTime = DateTime.Now;
             var nowFormat = string.Format("{0}:{1}:{2}", currentTime.Hour, currentTime.Minute, currentTime.Second);
-            User user = AuthorizationService.Instance.CurrentUser;
+            User user = _authorizationService.CurrentUser;
             HelloBox.Text = $"Здравствуйте, {user.Login}\nВаша роль: {user.Role.Name}\nВремя авторизации: {nowFormat}";
         }
 
@@ -37,7 +44,7 @@ namespace BurgerApp.Pages
             MyLBox.ItemsSource = null;
             menuItems.Clear();
 
-            var allFood = ApplicationContext.Instance.Foods
+            var allFood = _context.Foods
                .Include(x => x.Category)
                .ToList();
 
@@ -52,7 +59,7 @@ namespace BurgerApp.Pages
                     Price = food.Price
                 };
 
-                var allFoodIngredients = ApplicationContext.Instance.FoodIngridients
+                var allFoodIngredients = _context.FoodIngridients
                     .Include(x => x.Food)
                     .Include(x => x.Ingridient)
                     .ThenInclude(x => x.Unit)
@@ -83,7 +90,7 @@ namespace BurgerApp.Pages
 
             if (result == MessageBoxResult.Yes)
             {
-                MenuService.Instance.DeleteItem(item);
+                _menuService.DeleteItem(item);
 
                 RefreshData();
             }
@@ -93,7 +100,7 @@ namespace BurgerApp.Pages
         {
             if (MyLBox.SelectedItem is MenuItemDTO item)
             {
-                NavigationService.Navigate(new EditIngredientsPage(item.Id));
+                NavigationService.Navigate(new EditIngredientsPage(item.Id, _menuService));
             }
         }
 
@@ -104,7 +111,7 @@ namespace BurgerApp.Pages
 
         private void AddBtn_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            NavigationService.Navigate(new AddItemPage());
+            NavigationService.Navigate(new AddItemPage(_menuService, _authorizationService, _context));
         }
 
 
