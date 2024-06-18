@@ -1,6 +1,7 @@
 ﻿using BurgerApp.Database;
 using BurgerApp.Database.Models;
 using BurgerApp.Models;
+using System.Linq;
 
 namespace BurgerApp.Services
 {
@@ -11,7 +12,7 @@ namespace BurgerApp.Services
         {
             get => instance ??= new MenuService();
         }
-
+        public List<Ingridient> GetAllIngredients() => ApplicationContext.Instance.Ingridients.ToList();
         public void AddNewMenuItem(string name, string description, double price, int categoryId)
         {
             var category = ApplicationContext.Instance.Categories.FirstOrDefault(c => c.Id == categoryId);
@@ -27,8 +28,40 @@ namespace BurgerApp.Services
                 };
             }
         }
+        public void AddNewFoodIngredient(int foodId, int ingredientId, int countOfUnit)
+        {
+            var ingredient = ApplicationContext.Instance.Ingridients.FirstOrDefault(x => x.Id == ingredientId);
+            var food = ApplicationContext.Instance.Foods.FirstOrDefault(x => x.Id == foodId);
+            ApplicationContext.Instance.FoodIngridients.Add(new FoodIngridient
+            {
+                CountOfUnit = countOfUnit,
+                Ingridient = ingredient,
+                Food = food
+            });
+            ApplicationContext.Instance.SaveChanges();
+        }
+        public void EditFoodIngredient(int foodIngredientId, int ingredientId, int countOfUnit)
+        {
+            var foodIngredient = ApplicationContext.Instance.FoodIngridients.FirstOrDefault(x => x.Id == foodIngredientId);
+            var ingredient = ApplicationContext.Instance.Ingridients.FirstOrDefault(x => x.Id == ingredientId);
 
-        public List<FoodIngridient> GetFoodIngridientsByFoodId(int foodId)
+            foodIngredient.Ingridient = ingredient;
+            foodIngredient.CountOfUnit = countOfUnit;
+
+            ApplicationContext.Instance.SaveChanges();
+        }
+        public void DeleteFoodIngredient(FoodIngridient foodIngredient) 
+        {
+            var removeItems = ApplicationContext.Instance.FoodIngridients
+                .Where(x => x.Id == foodIngredient.Id)
+                .ToList();
+
+            ApplicationContext.Instance.FoodIngridients.RemoveRange(removeItems);
+
+            ApplicationContext.Instance.SaveChanges();
+        }
+
+        public List<FoodIngridient> GetFoodIngredientsByFoodId(int foodId)
         {
             return ApplicationContext.Instance.FoodIngridients
                 .Where(x => x.Food.Id == foodId)
